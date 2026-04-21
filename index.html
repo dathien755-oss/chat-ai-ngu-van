@@ -21,17 +21,44 @@
       box.appendChild(div);
     }
 
-    function send() {
-      let input = document.getElementById("msg");
-      let text = input.value.trim();
+    async function send() {
+  let input = document.getElementById("msg");
+  let text = input.value.trim();
 
-      if (!text) return;
+  if (!text) return;
 
-      add("Bạn: " + text);
-      add("AI: (đang test)");
+  add("Bạn: " + text);
+  input.value = "";
 
-      input.value = "";
+  add("AI đang trả lời...");
+
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: text })
+    });
+
+    const data = await res.json();
+
+    // xóa dòng "AI đang trả lời..."
+    let box = document.getElementById("messages");
+    box.removeChild(box.lastChild);
+
+    if (data.reply) {
+      add("AI: " + data.reply);
+    } else {
+      add("AI lỗi: " + (data.error || "Không rõ lỗi"));
     }
+
+  } catch (err) {
+    let box = document.getElementById("messages");
+    box.removeChild(box.lastChild);
+    add("AI lỗi kết nối");
+  }
+}
   </script>
 </body>
 </html>
