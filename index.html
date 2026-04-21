@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Chat AI Ngữ văn</title>
+</head>
+
+<body>
+  <h2>Chat AI Ngữ văn</h2>
+
+  <div id="messages"></div>
+
+  <textarea id="msg"></textarea>
+  <button onclick="send()">Gửi</button>
+
+  <script>
+    function add(text) {
+      let box = document.getElementById("messages");
+      let div = document.createElement("div");
+      div.textContent = text;
+      box.appendChild(div);
+    }
+
+    function send() {
+      let input = document.getElementById("msg");
+      let text = input.value.trim();
+
+      if (!text) return;
+
+      add("Bạn: " + text);
+      add("AI: (đang test)");
+
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
